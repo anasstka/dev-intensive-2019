@@ -41,17 +41,13 @@ object Utils {
     )
 
     fun parseFullName(fullName: String?): Pair<String?, String?> {
-        val parse: List<String>? = fullName?.split(" ")
+        val name = if (fullName.isNullOrBlank()) null else fullName.trim()
+        val parse: List<String>? = name?.trim()?.split(" ")
 
-        var firstName = parse?.getOrNull(0)
-        var lastName = parse?.getOrNull(1)
+        val firstName = parse?.getOrNull(0)
+        val lastName = parse?.getOrNull(1)
 
-        if (firstName.isNullOrEmpty())
-            firstName = null
-        if (lastName.isNullOrEmpty())
-            lastName = null
-
-        return Pair(firstName, lastName)
+        return firstName to lastName
     }
 
     fun transliteration(payload: String, divider: String = " "): String {
@@ -73,6 +69,6 @@ object Utils {
     fun toInitials(firstName: String?, lastName: String?): String? {
         if (firstName.isNullOrBlank() and lastName.isNullOrBlank())
             return null
-        return "${firstName?.toUpperCase(Locale.ROOT)?.getOrNull(0) ?: ""}${lastName?.toUpperCase(Locale.ROOT)?.getOrNull(0) ?: ""}"
+        return "${firstName?.trim()?.toUpperCase(Locale.ROOT)?.getOrNull(0) ?: ""}${lastName?.trim()?.toUpperCase(Locale.ROOT)?.getOrNull(0) ?: ""}"
     }
 }

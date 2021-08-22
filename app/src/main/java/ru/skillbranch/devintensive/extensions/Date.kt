@@ -2,10 +2,12 @@ package ru.skillbranch.devintensive.extensions
 
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.abs
+import kotlin.math.min
 
 private val declension = mapOf(
         0L to listOf("секунд", "минут", "часов", "дней"),
-        1L to listOf("секунду", "минута", "час", "день"),
+        1L to listOf("секунду", "минуту", "час", "день"),
         2L to listOf("секунды", "минуты", "часа", "дня"),
         3L to listOf("секунды", "минуты", "часа", "дня"),
         4L to listOf("секунды", "минуты", "часа", "дня"),
@@ -46,25 +48,45 @@ fun Date.humanizeDiff(date: Date = Date()): String {
     val hours: Long = minutes / 60
     val days: Long = hours / 24
     return when {
-        seconds in 0..1 -> "только что"
+        seconds in -1..1 -> "только что"
+
         seconds in 1..45 -> "несколько секунд назад"
+        seconds in -45..-1 -> "через несколько секунд"
+
         seconds in 45..75 -> "минуту назад"
-        seconds in 75..2700 -> "$minutes ${TimeUnits.MINUTE.plural(minutes)} назад"
+        seconds in -75..-45 -> "через минуту"
+
+        seconds in 75..2700 -> "${TimeUnits.MINUTE.plural(minutes)} назад"
+        seconds in -2700..-75 -> "через ${TimeUnits.MINUTE.plural(minutes)}"
+
         minutes in 45..75 -> "час назад"
-        minutes in 75..1320 -> "$hours ${TimeUnits.HOUR.plural(hours)} назад"
+        minutes in -75..-45 -> "через час"
+
+        minutes in 75..1320 -> "${TimeUnits.HOUR.plural(hours)} назад"
+        minutes in -1320..-75 -> "через ${TimeUnits.HOUR.plural(hours)}"
+
         hours in 22..26 -> "день назад"
-        hours in 26..8640 -> "$days ${TimeUnits.DAY.plural(days)} назад"
-        else -> "более года назад"
+        hours in -26..-22 -> "через день"
+
+        hours in 26..8640 -> "${TimeUnits.DAY.plural(days)} назад"
+        hours in -8640..-26 -> "через ${TimeUnits.DAY.plural(days)}"
+
+        days > 360 -> "более года назад"
+        days < -360 -> "более чем через год"
+
+        else -> ""
     }
 }
 
-enum class TimeUnits(val time: Int) {
+enum class TimeUnits(private val time: Int) {
     SECOND(0),
     MINUTE(1),
     HOUR(2),
     DAY(3);
 
     fun plural(value: Long) : String {
-        return "$value ${declension[value % 10]?.get(time)}"
+        if (abs(value % 100) in 11..19)
+            return "${abs(value)} ${declension[9]?.get(time)}"
+        return "${abs(value)} ${declension[abs(value % 10)]?.get(time)}"
     }
 }
