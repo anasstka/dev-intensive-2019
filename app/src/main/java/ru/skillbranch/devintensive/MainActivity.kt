@@ -1,10 +1,8 @@
 package ru.skillbranch.devintensive
 
-import android.app.Activity
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
@@ -42,7 +40,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         textTxt.text = benderObj.askQuestion()
         sendBtn.setOnClickListener(this)
         messageEt.setOnEditorActionListener { v, actionId, event ->
-            if(actionId == EditorInfo.IME_ACTION_DONE){
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 hideKeyboard()
                 val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString())
                 messageEt.setText("")
