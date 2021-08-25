@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         sendBtn.setOnClickListener(this)
         messageEt.setOnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                processResponse()
+                sendMessage()
                 true
             } else {
                 false
@@ -58,11 +58,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         if (view?.id == R.id.iv_send) {
-            processResponse()
+            sendMessage()
         }
     }
 
-    fun processResponse() {
+    private fun sendMessage() {
         hideKeyboard()
         val (phrase, color) = benderObj.listenAnswer(messageEt.text.toString())
         messageEt.setText("")

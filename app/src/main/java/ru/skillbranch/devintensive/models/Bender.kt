@@ -63,7 +63,7 @@ class Bender(
 
             override fun validation(userAnswer: String): Pair<Int, String> {
                 return when {
-                    userAnswer[0].isLowerCase() -> {
+                    ! userAnswer.isNullOrBlank() && userAnswer[0].isLowerCase() -> {
                         1 to "Имя должно начинаться с заглавной буквы\n"
                     }
                     answer.contains(userAnswer.toLowerCase()) -> {
