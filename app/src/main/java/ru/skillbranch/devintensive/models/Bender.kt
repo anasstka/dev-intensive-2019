@@ -18,10 +18,10 @@ class Bender(
     fun listenAnswer(answer: String): Pair<String, Triple<Int, Int, Int>> {
         val resultValidation = question.validation(answer)
         return when (resultValidation.first) {
-            1 -> "${resultValidation.second}\n${question.question}" to status.color
+            1 -> "${resultValidation.second}${question.question}" to status.color
             2 -> {
                 question = question.nextQuestion()
-                "${resultValidation.second}\n${question.question}" to status.color
+                "${resultValidation.second}${question.question}" to status.color
             }
             3 -> {
                 val isLastStatus = status == Status.CRITICAL
@@ -64,10 +64,10 @@ class Bender(
             override fun validation(userAnswer: String): Pair<Int, String> {
                 return when {
                     userAnswer[0].isLowerCase() -> {
-                        1 to "Имя должно начинаться с заглавной буквы"
+                        1 to "Имя должно начинаться с заглавной буквы\n"
                     }
                     answer.contains(userAnswer.toLowerCase()) -> {
-                        2 to "Отлично - ты справился"
+                        2 to "Отлично - ты справился\n"
                     }
                     else -> {
                         3 to "Это неправильный ответ"
@@ -81,10 +81,10 @@ class Bender(
             override fun validation(userAnswer: String): Pair<Int, String> {
                 return when {
                     userAnswer[0].isUpperCase() -> {
-                        1 to "Профессия должна начинаться со строчной буквы"
+                        1 to "Профессия должна начинаться со строчной буквы\n"
                     }
                     answer.contains(userAnswer.toLowerCase()) -> {
-                        2 to "Отлично - ты справился"
+                        2 to "Отлично - ты справился\n"
                     }
                     else -> {
                         3 to "Это неправильный ответ"
@@ -98,10 +98,10 @@ class Bender(
             override fun validation(userAnswer: String): Pair<Int, String> {
                 return when {
                     userAnswer.matches(Regex(".*\\d+.*")) -> {
-                        1 to "Материал не должен содержать цифр"
+                        1 to "Материал не должен содержать цифр\n"
                     }
                     answer.contains(userAnswer.toLowerCase()) -> {
-                        2 to "Отлично - ты справился"
+                        2 to "Отлично - ты справился\n"
                     }
                     else -> {
                         3 to "Это неправильный ответ"
@@ -114,11 +114,11 @@ class Bender(
 
             override fun validation(userAnswer: String): Pair<Int, String> {
                 return when {
-                    userAnswer.matches(Regex("\\D+")) -> {
-                        1 to "Год моего рождения должен содержать только цифры"
+                    ! userAnswer.matches(Regex("\\d+")) -> {
+                        1 to "Год моего рождения должен содержать только цифры\n"
                     }
                     answer.contains(userAnswer.toLowerCase()) -> {
-                        2 to "Отлично - ты справился"
+                        2 to "Отлично - ты справился\n"
                     }
                     else -> {
                         3 to "Это неправильный ответ"
@@ -131,11 +131,11 @@ class Bender(
 
             override fun validation(userAnswer: String): Pair<Int, String> {
                 return when {
-                    userAnswer.matches(Regex("\\D+")) && userAnswer.length != 7 -> {
-                        1 to "Серийный номер содержит только цифры, и их 7"
+                    ! userAnswer.matches(Regex("\\d+")) || userAnswer.length != 7 -> {
+                        1 to "Серийный номер содержит только цифры, и их 7\n"
                     }
                     answer.contains(userAnswer.toLowerCase()) -> {
-                        2 to "Отлично - ты справился"
+                        2 to "Отлично - ты справился\n"
                     }
                     else -> {
                         3 to "Это неправильный ответ"
@@ -146,8 +146,7 @@ class Bender(
         IDLE("На этом все, вопросов больше нет", listOf()) {
             override fun nextQuestion(): Question = IDLE
 
-            override fun validation(userAnswer: String): Pair<Int, String>
-                    = 2 to ""
+            override fun validation(userAnswer: String): Pair<Int, String> = 2 to ""
         };
 
         abstract fun nextQuestion(): Question
