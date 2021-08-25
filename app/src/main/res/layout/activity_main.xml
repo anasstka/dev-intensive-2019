@@ -38,7 +38,7 @@
             android:layout_weight="1"
             android:hint="Введите текст"
             android:inputType="text"
-            android:imeOptions="actionDone|flagNoExtractUi"
+            android:imeOptions="actionDone|flagNoFullscreen"
             android:lines="1"
             android:paddingTop="@dimen/spacing_normal_16"
             android:paddingBottom="@dimen/spacing_normal_16"
