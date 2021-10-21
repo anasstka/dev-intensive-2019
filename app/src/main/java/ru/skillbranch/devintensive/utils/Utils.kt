@@ -61,13 +61,8 @@ object Utils {
             result += char
         }
 
-        return result.replace(" ", divider)
+        return result.trim().replace(" ", divider)
     }
-
-//    private fun firstUpperCase(str: String, divider: String = " "): String {
-//        val parse: List<String> = str.split(" ")
-//        return "${parse.getOrNull(0)?.capitalize() ?: ""}$divider${parse.getOrNull(1)?.capitalize() ?: ""}"
-//    }
 
     fun toInitials(firstName: String?, lastName: String?): String? {
         if (firstName.isNullOrBlank() and lastName.isNullOrBlank())
